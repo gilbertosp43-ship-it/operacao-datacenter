@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Operação Data Center — Plataforma Oficial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Albert+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --font-display:'Chakra Petch',system-ui,sans-serif;
+  --font-body:'Albert Sans',system-ui,sans-serif;
+  --bg:#060A13; --surface:#0F1830; --surface-2:#15213F; --ink:#EAF0FB; --muted:#9BA9C4; --line:#24345A;
+  --cyan:#2BE3FF; --violet:#A98DFF; --btn-bg:#2BE3FF; --btn-fg:#04111C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font-body);min-height:100vh}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:var(--font-display);margin:0}
+a{color:var(--cyan)}
+
+/* === TELA DE LOGIN === */
+#login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:min(100%,460px);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px}
+.login-card .logo{width:64px;height:64px;border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--cyan),var(--violet));font-size:2rem;font-weight:700;color:var(--btn-fg)}
+.login-card h1{text-align:center;font-size:1.6rem;margin-bottom:6px}
+.login-card .sub{text-align:center;color:var(--muted);margin-bottom:24px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;margin-bottom:6px;color:var(--muted)}
+.form-row input,.form-row select,.form-row textarea{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-size:1rem}
+.form-row input:focus,.form-row select:focus{border-color:var(--cyan);outline:none}
+.btn{border:none;font:600 .92rem var(--font-body);padding:11px 18px;border-radius:10px;cursor:pointer;width:100%}
+.btn.pri{background:var(--btn-bg);color:var(--btn-fg)}
+.toggle-mode{text-align:center;margin-top:16px;color:var(--cyan);cursor:pointer;font-size:.9rem}
+.toggle-mode:hover{text-decoration:underline}
+.hidden{display:none !important}
+
+/* === NAVEGAÇÃO === */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}
+.logo-sm{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--cyan),var(--violet));font-weight:bold;color:var(--btn-fg)}
+.user-chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.85rem}
+.nv{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 0;overflow-x:auto}
+.nv .wrap{display:flex;gap:6px}
+.tab{background:transparent;border:none;color:var(--muted);padding:10px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tab.active{background:var(--cyan);color:var(--btn-fg)}
+.view{display:none;padding:30px 0}
+.view.active{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:20px}
+.card h3{margin-bottom:12px}
+.card p{color:var(--muted);margin-bottom:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:.85rem}
+button.sm{width:auto;padding:6px 12px;font-size:.85rem;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+button.danger{background:#ff4757;color:white}
+.copy-input{display:flex;gap:8px;margin-top:8px}
+.copy-input input{flex:1;padding:8px;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- TELA DE LOGIN -->
+<div id="login-wrap">
+  <div class="login-card">
+    <div class="logo">DC</div>
+    <h1>Operação Data Center</h1>
+    <p class="sub">Plataforma Oficial</p>
+
+    <!-- FORMULÁRIO DE LOGIN -->
+    <div id="login-form">
+      <div class="form-row">
+        <label>E-mail</label>
+        <input type="email" id="login-email" placeholder="seuemail@empresa.com.br" />
+      </div>
+      <div class="form-row">
+        <label>Senha</label>
+        <input type="password" id="login-senha" placeholder="••••••••" />
+      </div>
+      <button class="btn pri" onclick="fazerLogin()">Entrar</button>
+      <div class="toggle-mode" onclick="mostrarCadastro()">🔑 Primeiro acesso? Cadastre-se</div>
+    </div>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <div id="cadastro-form" class="hidden">
+      <div class="form-row">
+        <label>Nome completo</label>
+        <input type="text" id="cad-nome" placeholder="Seu nome completo" />
+      </div>
+      <div class="form-row">
+        <label>E-mail</label>
+        <input type="email" id="cad-email" placeholder="seuemail@empresa.com.br" />
+      </div>
+      <div class="form-row">
+        <label>Área / Perfil</label>
+        <select id="cad-perfil">
+          <option>Administrador</option>
+          <option>Gestor</option>
+          <option>Obras</option>
+          <option>Operação</option>
+          <option>Manutenção</option>
+          <option>Convidado</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Criar senha</label>
+        <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres" />
+      </div>
+      <button class="btn pri" onclick="salvarCadastro()">Concluir Cadastro</button>
+      <div class="toggle-mode" onclick="mostrarLogin()">← Já tem conta? Faça login</div>
+    </div>
+  </div>
+</div>
+
+<!-- ÁREA PRINCIPAL -->
+<div id="app-wrap" class="hidden">
+  <header class="hd wrap">
+    <div class="brand">
+      <div class="logo-sm">DC</div>
+      <div><strong>Operação Data Center</strong><br><small style="color:var(--muted)">Plataforma Oficial</small></div>
+    </div>
+    <div class="user-chip" id="user-info">
+      <span id="user-name"></span>
+      <button class="btn sm" style="margin-left:8px;padding:4px 8px" onclick="sair()">Sair</button>
+    </div>
+  </header>
+
+  <nav class="nv">
+    <div class="wrap">
+      <button class="tab active" data-view="inicio">Início</button>
+      <button class="tab" data-view="obras">🏗️ Obras</button>
+      <button class="tab" data-view="comissao">✅ Comissionamento</button>
+      <button class="tab" data-view="manutencao">🛠️ Manutenção</button>
+      <button class="tab" data-view="operacao">🧑‍🔧 Operação</button>
+      <button class="tab" data-view="academia">📚 Academia</button>
+      <button class="tab" data-view="admin">⚙️ Admin</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <!-- INÍCIO -->
+    <section class="view active" id="v-inicio">
+      <h2 style="margin-bottom:20px">Bem-vindo à Plataforma</h2>
+      <p style="color:var(--muted);margin-bottom:30px">Ciclo completo de gestão do Data Center — da avaliação do terreno à operação diária.</p>
+      
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+        <div class="card">
+          <h3>🏗️ Obras</h3>
+          <p>Registro de avaliação, terraplenagem, subestação e construção.</p>
+          <button class="btn sm" onclick="trocarAba('obras')">Acessar →</button>
+        </div>
+        <div class="card">
+          <h3>✅ Comissionamento</h3>
+          <p>Testes, simulações de falha e registro de aceite.</p>
+          <button class="btn sm" onclick="trocarAba('comissao')">Acessar →</button>
+        </div>
+        <div class="card">
+          <h3>🛠️ Manutenção</h3>
+          <p>Preventiva, corretiva e não conformidades.</p>
+          <button class="btn sm" onclick="trocarAba('manutencao')">Acessar →</button>
+        </div>
+        <div class="card">
+          <h3>🧑‍🔧 Operação</h3>
+          <p>Rondas, DDS, LOTO e registros diários.</p>
+          <button class="btn sm" onclick="trocarAba('operacao')">Acessar →</button>
+        </div>
+        <div class="card">
+          <h3>📚 Academia</h3>
+          <p>Conteúdo, quiz e avaliação da equipe.</p>
+          <button class="btn sm" onclick="trocarAba('academia')">Acessar →</button>
+        </div>
+        <div class="card">
+          <h3>⚙️ Administração</h3>
+          <p>Usuários, links de acesso e permissões.</p>
+          <button class="btn sm" onclick="trocarAba('admin')">Acessar →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- OBRAS -->
+    <section class="view" id="v-obras">
+      <h2>🏗️ Obras e Implantação</h2>
+      <div class="card">
+        <h3>Novo Registro</h3>
+        <div class="form-row">
+          <label>Etapa</label>
+          <select id="obra-etapa">
+            <option>Avaliação do Local</option>
+            <option>Terraplenagem</option>
+            <option>Subestação</option>
+            <option>Construção Civil</option>
+            <option>Instalação</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Descrição</label>
+          <textarea id="obra-desc" rows="4" placeholder="Detalhe a atividade..."></textarea>
+        </div>
+        <button class="btn pri" onclick="salvarObra()">Salvar Registro</button>
+      </div>
+      <div class="card">
+        <h3>Registros</h3>
+        <table id="tabela-obras">
+          <thead><tr><th>Data</th><th>Etapa</th><th>Descrição</th><th>Resp.</th></tr></thead>
+          <tbody id="lista-obras"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COMISSIONAMENTO -->
+    <section class="view" id="v-comissao">
+      <h2>✅ Comissionamento e Testes</h2>
+      <div class="card">
+        <h3>Registro de Teste</h3>
+        <div class="form-row">
+          <label>Equipamento/Sistema</label>
+          <input type="text" id="comiss-equip" placeholder="ex: UPS, Gerador, Chiller">
+        </div>
+        <div class="form-row">
+          <label>Resultado</label>
+          <select id="comiss-result">
+            <option>Conforme</option>
+            <option>Não Conforme — Pendência</option>
+            <option>Não Conforme — Bloqueio</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Observações</label>
+          <textarea id="comiss-obs" rows="3"></textarea>
+        </div>
+        <button class="btn pri" onclick="salvarComissao()">Salvar Teste</button>
+      </div>
+    </section>
+
+    <!-- MANUTENÇÃO -->
+    <section class="view" id="v-manutencao">
+      <h2>🛠️ Manutenção</h2>
+      <div class="card">
+        <h3>Ordem de Serviço</h3>
+        <div class="form-row">
+          <label>Tipo</label>
+          <select id="man-tipo">
+            <option>Preventiva</option>
+            <option>Corretiva</option>
+            <option>Inspeção</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Equipamento</label>
+          <input type="text" id="man-equip">
+        </div>
+        <div class="form-row">
+          <label>Descrição do Serviço</label>
+          <textarea id="man-desc" rows="3"></textarea>
+        </div>
+        <button class="btn pri" onclick="salvarManutencao()">Registrar</button>
+      </div>
+    </section>
+
+    <!-- OPERAÇÃO -->
+    <section class="view" id="v-operacao">
+      <h2>🧑‍🔧 Operação Diária</h2>
+      <div class="card">
+        <h3>Registro de Ronda / Ocorrência</h3>
+        <div class="form-row">
+          <label>Área</label>
+          <input type="text" id="op-area" placeholder="Sala UPS, Sala Geradores, etc">
+        </div>
+        <div class="form-row">
+          <label>Observação / Leitura</label>
+          <textarea id="op-nota" rows="3" placeholder="Temperatura, estado dos equipamentos, alarmes..."></textarea>
+        </div>
+        <button class="btn pri" onclick="salvarOperacao()">Registrar</button>
+      </div>
+    </section>
+
+    <!-- ACADEMIA -->
+    <section class="view" id="v-academia">
+      <h2>📚 Academia e Avaliação</h2>
+      <div class="card">
+        <h3>Conteúdo de Referência</h3>
+        <ul style="line-height:1.8">
+          <li><strong>Consolidado:</strong> UPS N+1/2N, VRLA, Geradores Diesel, Chillers, CRAH, BMS, LOTO, APR, NR-10</li>
+          <li><strong>Novas Tendências:</strong> Baterias de Lítio, Free Cooling, Acumuladores Térmicos, Refrigeração Líquida (DLC/CDU), Imersão Dielétrica, Racks de Alta Densidade</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Quiz Rápido</h3>
+        <p>Qual tecnologia usa o ar externo para auxiliar no resfriamento?</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+          <button class="btn sm" style="text-align:left" onclick="resposta(this,'errado')">A) Chiller</button>
+          <button class="btn sm" style="text-align:left" onclick="resposta(this,'certo')">B) Free Cooling ✅</button>
+          <button class="btn sm" style="text-align:left" onclick="resposta(this,'errado')">C) UPS</button>
+        </div>
+        <p id="resposta-msg" style="margin-top:12px"></p>
+      </div>
+    </section>
+
+    <!-- ADMINISTRAÇÃO -->
+    <section class="view" id="v-admin">
+      <h2>⚙️ Administração</h2>
+      <div class="card">
+        <h3>Gerar Link de Primeiro Acesso</h3>
+        <p>Envie este link para a pessoa que precisa se cadastrar:</p>
+        <div class="copy-input">
+          <input type="text" id="link-convite" readonly>
+          <button class="btn sm" onclick="copiarLink()">Copiar</button>
+        </div>
+        <p style="margin-top:10px;font-size:.85rem;color:var(--muted)">A pessoa acessa o link → clica em "Primeiro acesso" → se cadastra → você gerencia os acessos.</p>
+      </div>
+      <div class="card">
+        <h3>Usuários Cadastrados</h3>
+        <table id="tabela-usuarios">
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Ação</th></tr></thead>
+          <tbody id="lista-usuarios"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Exportar Dados</h3>
+        <button class="btn sm" onclick="exportarDados()">📥 Baixar Backup (JSON)</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// === DADOS LOCAIS ===
+function getUsuarios(){return JSON.parse(localStorage.getItem('dc_usuarios')||'[]')}
+function salvarUsuarios(lista){localStorage.setItem('dc_usuarios',JSON.stringify(lista))}
+function getUsuarioLogado(){return JSON.parse(localStorage.getItem('dc_logado')||'null')}
+function setUsuarioLogado(u){localStorage.setItem('dc_logado',u?JSON.stringify(u):'')}
+
+// === TELAS DE LOGIN ===
+function mostrarCadastro(){
+  document.getElementById('login-form').classList.add
